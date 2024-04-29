@@ -15,4 +15,5 @@ public interface CategoryService {
     CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDTO);
     CategoryResponseDto updateCategory(CategoryRequestDto categoryRequestDTO, UUID categoryId);
     String deleteCategory(UUID categoryId);
+    double getTotalPriceForCategory(UUID categoryId);
 }

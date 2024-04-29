@@ -3,6 +3,7 @@ package dev.dharamesh.ecomproductservice.service;
 import dev.dharamesh.ecomproductservice.dto.CategoryRequestDto;
 import dev.dharamesh.ecomproductservice.dto.CategoryResponseDto;
 import dev.dharamesh.ecomproductservice.entity.Category;
+import dev.dharamesh.ecomproductservice.entity.Product;
 import dev.dharamesh.ecomproductservice.exceptions.CategoryNotFoundException;
 import dev.dharamesh.ecomproductservice.mapper.DtoMapper;
 import dev.dharamesh.ecomproductservice.repositories.CategoryRepository;
@@ -67,5 +68,22 @@ public class CategoryServiceImpl implements CategoryService{
         categoryRepository.deleteById(categoryId);
 
         return "Deleted Successfully..";
+    }
+
+    @Override
+    public double getTotalPriceForCategory(UUID categoryId) {
+        Category savedCategory = categoryRepository.findById(categoryId).orElseThrow(
+                ()-> new CategoryNotFoundException("Category not found with id: "+categoryId)
+        );
+
+        if(savedCategory.getProducts().isEmpty()){
+            return 0.0;
+        }else{
+            double sum = 0;
+            for(Product product: savedCategory.getProducts()){
+                sum += product.getPrice();
+            }
+            return sum;
+        }
     }
 }
